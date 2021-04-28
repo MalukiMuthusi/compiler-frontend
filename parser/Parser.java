@@ -23,6 +23,7 @@ public class Parser {
       Stmt s = block();
       int begin = s.newlabel();  int after = s.newlabel();
       s.emitlabel(begin);  s.gen(begin, after);  s.emitlabel(after);
+      System.out.println("Success: Valid code");
    }
 
    Stmt block() throws IOException {  // block -> { decls stmts }

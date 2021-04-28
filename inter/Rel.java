@@ -2,7 +2,7 @@ package inter;
 import lexer.*; import symbols.*;
 
 public class Rel extends Logical {
-
+// Relation logical operator
    public Rel(Token tok, Expr x1, Expr x2) { super(tok, x1, x2); }
 
    public Type check(Type p1, Type p2) {
