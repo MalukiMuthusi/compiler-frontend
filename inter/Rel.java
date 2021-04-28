@@ -1,10 +1,18 @@
 package inter;
 import lexer.*; import symbols.*;
 
+
+/**
+ * Relation operator
+ * 
+ */
 public class Rel extends Logical {
 // Relation logical operator
    public Rel(Token tok, Expr x1, Expr x2) { super(tok, x1, x2); }
 
+   /**
+    * ensure @param p1 and @param p2 have the same type and they are not booleans
+    */
    public Type check(Type p1, Type p2) {
       if ( p1 instanceof Array || p2 instanceof Array ) return null;
       else if( p1 == p2 ) return Type.Bool;

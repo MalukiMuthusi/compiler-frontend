@@ -1,6 +1,9 @@
 package inter;
 import lexer.*; import symbols.*;
 
+/**
+ * One-operand operation
+ */
 public class Unary extends Op {
 
    public Expr expr;

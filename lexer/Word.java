@@ -1,4 +1,7 @@
 package lexer;
+/*
+* Manage lexemes for reserved words, identifiers, and composite tokens e.g &&
+*/
 public class Word extends Token {
 
    public String lexeme = "";

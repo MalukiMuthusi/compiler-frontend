@@ -39,6 +39,8 @@ factor -> (bool) | loc | num | real | true | false
 
 #### Example 1
 
+##### input file block.t
+
 ```java
 {
 	int a; int b; a = 0; b = 0;
@@ -57,7 +59,25 @@ factor -> (bool) | loc | num | real | true | false
 
 ```
 
+##### output file block.i
+
+```txt
+L1:	a = 0
+L3:	b = 0
+L4:	b = 1
+L6:	a = 2
+L7:	b = 3
+L8:	a = a + 1
+L9:	b = b + 1
+L5:	a = a + 1
+L10:	b = b + 1
+L2:
+
+```
+
 #### Example 2
+
+##### input file prog2.t
 
 ```java
 {
@@ -79,6 +99,25 @@ factor -> (bool) | loc | num | real | true | false
 }
 ```
 
+##### output file prog2.i
+
+```txt
+L1:	prod = 0
+L3:	i = 1
+L4:	t1 = i * 8
+	t2 = a [ t1 ]
+	t3 = i * 8
+	t4 = b [ t3 ]
+	t5 = t2 * t4
+	prod = prod + t5
+L6:	i = i + 1
+L5:	if i <= 20 goto L4
+L2:
+```
+
+### To build
+Run `make build`
+
 ### Package lexer
 
 class Tag. Tags distinguish tokens.
@@ -87,11 +126,11 @@ class Lexer, with procedure scan
 
 ### Package symbols
 
-class Type.  Put types here.
-class Id.  Could have put Id's with expressions; in fact Id extends Expr
-class Env.  Linked symbol tables.
+class Type. Put types here.
+class Id. Could have put Id's with expressions; in fact Id extends Expr
+class Env. Linked symbol tables.
 
 ### Package inter for intermediate code
 
-For simplicity, the front end builds syntax trees.  Three-address code is
+For simplicity, the front end builds syntax trees. Three-address code is
 emitted during a subsequent pass.

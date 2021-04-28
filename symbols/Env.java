@@ -1,6 +1,9 @@
 package symbols;
 import java.util.*; import lexer.*; import inter.*;
 
+/**
+ * maps word tokens to objects of class [Id]
+ */
 public class Env {
 
 	private Hashtable table;
