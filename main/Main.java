@@ -1,5 +1,8 @@
 package main;
-import java.io.*; import lexer.*; import parser.*;
+
+import java.io.*;
+import lexer.*;
+import parser.*;
 
 public class Main {
 
