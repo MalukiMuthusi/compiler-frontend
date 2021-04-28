@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.*;
 import symbols.*;
 
+/**
+ * maps strings to words
+ */
 public class Lexer {
    public static int line = 1;
    char peek = ' ';
@@ -15,6 +18,9 @@ public class Lexer {
       words.put(w.lexeme, w);
    }
 
+   /**
+    * reseve key words
+    */
    public Lexer() {
 
       reserve(new Word("if", Tag.IF));
@@ -32,10 +38,22 @@ public class Lexer {
       reserve(Type.Float);
    }
 
+   /**
+    * read the next input character into @peek
+    * 
+    * @throws IOException
+    */
    void readch() throws IOException {
       peek = (char) System.in.read();
    }
 
+   /**
+    * identify composite tokens
+    * 
+    * @param c
+    * @return
+    * @throws IOException
+    */
    boolean readch(char c) throws IOException {
       readch();
       if (peek != c)
@@ -44,8 +62,13 @@ public class Lexer {
       return true;
    }
 
+   /**
+    * recognize numbers, identifiers, and reserved words
+    */
    public Token scan() throws IOException {
       for (;; readch()) {
+
+         // skip white spaces
          if (peek == ' ' || peek == '\t')
             continue;
          else if (peek == '\n')
@@ -53,6 +76,8 @@ public class Lexer {
          else
             break;
       }
+
+      // check the character you have read if it is part of a composite token e.g &&
       switch (peek) {
       case '&':
          if (readch('&'))
@@ -106,6 +131,8 @@ public class Lexer {
          }
          return new Real(x);
       }
+
+      // handle letters, letters for form variables and keywords.
       if (Character.isLetter(peek)) {
          StringBuffer b = new StringBuffer();
          do {
@@ -120,6 +147,8 @@ public class Lexer {
          words.put(s, w);
          return w;
       }
+
+      // return any remaining characters as token
       Token tok = new Token(peek);
       peek = ' ';
       return tok;

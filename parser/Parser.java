@@ -5,12 +5,33 @@ import lexer.*;
 import symbols.*;
 import inter.*;
 
+/**
+ * Builds syntax tree
+ * 
+ * Has procedures for each non-terminal in the grammar. see @file README to view
+ * the grammar
+ */
 public class Parser {
 
-   private Lexer lex; // lexical analyzer for this parser
-   private Token look; // lookahead tagen
-   Env top = null; // current or top symbol table
-   int used = 0; // storage used for declarations
+   /**
+    * lexical analyzer for this parser
+    */
+   private Lexer lex; 
+
+   /**
+    * lookahead tagen
+    */
+   private Token look;
+
+   /**
+    * current or top symbol table
+    */
+   Env top = null;
+
+   /**
+    * storage used for declarations
+    */
+   int used = 0;
 
    public Parser(Lexer l) throws IOException {
       lex = l;
@@ -32,6 +53,9 @@ public class Parser {
          error("syntax error");
    }
 
+   /**
+    * implements: program -> block
+    */
    public void program() throws IOException { // program -> block
       Stmt s = block();
       int begin = s.newlabel();
@@ -42,8 +66,16 @@ public class Parser {
       System.out.println("Success: Valid code");
    }
 
-   Stmt block() throws IOException { // block -> { decls stmts }
+   /**
+    * implements: block -> { decls stmts }
+    * 
+    * @return
+    * @throws IOException
+    */
+   Stmt block() throws IOException {
       match('{');
+
+      // link to the previous symbol table
       Env savedEnv = top;
       top = new Env(top);
       decls();
@@ -53,9 +85,14 @@ public class Parser {
       return s;
    }
 
+   /**
+    * implements D -> type ID ;
+    * 
+    * @throws IOException
+    */
    void decls() throws IOException {
 
-      while (look.tag == Tag.BASIC) { // D -> type ID ;
+      while (look.tag == Tag.BASIC) {
          Type p = type();
          Token tok = look;
          match(Tag.ID);
@@ -93,6 +130,11 @@ public class Parser {
          return new Seq(stmt(), stmts());
    }
 
+   /**
+    * productions for non terminal Stmts see grammar at @file README
+    * @return
+    * @throws IOException
+    */
    Stmt stmt() throws IOException {
       Expr x;
       Stmt s, s1, s2;
