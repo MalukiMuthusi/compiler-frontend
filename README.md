@@ -30,10 +30,4 @@ class Env.  Linked symbol tables.
 ### Package inter for intermediate code
 
 For simplicity, the front end builds syntax trees.  Three-address code is
-emitted during a subsequent pass.  We generate short-circuit code for
-boolean expressions.
-
-An optimizing compiler would presumably create intermediate-code objects
-rather than emitting strings.  Further, Chapter 9 has examples with code
-that might be produced by backpatching -- that's a variant to be explored
-separately.
+emitted during a subsequent pass.
