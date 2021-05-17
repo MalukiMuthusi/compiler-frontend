@@ -16,7 +16,7 @@ public class Parser {
    /**
     * lexical analyzer for this parser
     */
-   private Lexer lex; 
+   private Lexer lex;
 
    /**
     * lookahead tagen
@@ -77,6 +77,7 @@ public class Parser {
 
       // link to the previous symbol table
       Env savedEnv = top;
+      // System.out.println(top.get(w));
       top = new Env(top);
       decls();
       Stmt s = stmts();
@@ -99,6 +100,7 @@ public class Parser {
          match(';');
          Id id = new Id((Word) tok, p, used);
          top.put(tok, id);
+         System.out.println(tok);
          used = used + p.width;
       }
    }
@@ -132,6 +134,7 @@ public class Parser {
 
    /**
     * productions for non terminal Stmts see grammar at @file README
+    * 
     * @return
     * @throws IOException
     */
@@ -142,60 +145,60 @@ public class Parser {
 
       switch (look.tag) {
 
-      case ';':
-         move();
-         return Stmt.Null;
+         case ';':
+            move();
+            return Stmt.Null;
 
-      case Tag.IF:
-         match(Tag.IF);
-         match('(');
-         x = bool();
-         match(')');
-         s1 = stmt();
-         if (look.tag != Tag.ELSE)
-            return new If(x, s1);
-         match(Tag.ELSE);
-         s2 = stmt();
-         return new Else(x, s1, s2);
+         case Tag.IF:
+            match(Tag.IF);
+            match('(');
+            x = bool();
+            match(')');
+            s1 = stmt();
+            if (look.tag != Tag.ELSE)
+               return new If(x, s1);
+            match(Tag.ELSE);
+            s2 = stmt();
+            return new Else(x, s1, s2);
 
-      case Tag.WHILE:
-         While whilenode = new While();
-         savedStmt = Stmt.Enclosing;
-         Stmt.Enclosing = whilenode;
-         match(Tag.WHILE);
-         match('(');
-         x = bool();
-         match(')');
-         s1 = stmt();
-         whilenode.init(x, s1);
-         Stmt.Enclosing = savedStmt; // reset Stmt.Enclosing
-         return whilenode;
+         case Tag.WHILE:
+            While whilenode = new While();
+            savedStmt = Stmt.Enclosing;
+            Stmt.Enclosing = whilenode;
+            match(Tag.WHILE);
+            match('(');
+            x = bool();
+            match(')');
+            s1 = stmt();
+            whilenode.init(x, s1);
+            Stmt.Enclosing = savedStmt; // reset Stmt.Enclosing
+            return whilenode;
 
-      case Tag.DO:
-         Do donode = new Do();
-         savedStmt = Stmt.Enclosing;
-         Stmt.Enclosing = donode;
-         match(Tag.DO);
-         s1 = stmt();
-         match(Tag.WHILE);
-         match('(');
-         x = bool();
-         match(')');
-         match(';');
-         donode.init(s1, x);
-         Stmt.Enclosing = savedStmt; // reset Stmt.Enclosing
-         return donode;
+         case Tag.DO:
+            Do donode = new Do();
+            savedStmt = Stmt.Enclosing;
+            Stmt.Enclosing = donode;
+            match(Tag.DO);
+            s1 = stmt();
+            match(Tag.WHILE);
+            match('(');
+            x = bool();
+            match(')');
+            match(';');
+            donode.init(s1, x);
+            Stmt.Enclosing = savedStmt; // reset Stmt.Enclosing
+            return donode;
 
-      case Tag.BREAK:
-         match(Tag.BREAK);
-         match(';');
-         return new Break();
+         case Tag.BREAK:
+            match(Tag.BREAK);
+            match(';');
+            return new Break();
 
-      case '{':
-         return block();
+         case '{':
+            return block();
 
-      default:
-         return assign();
+         default:
+            return assign();
       }
    }
 
@@ -252,15 +255,15 @@ public class Parser {
    Expr rel() throws IOException {
       Expr x = expr();
       switch (look.tag) {
-      case '<':
-      case Tag.LE:
-      case Tag.GE:
-      case '>':
-         Token tok = look;
-         move();
-         return new Rel(tok, x, expr());
-      default:
-         return x;
+         case '<':
+         case Tag.LE:
+         case Tag.GE:
+         case '>':
+            Token tok = look;
+            move();
+            return new Rel(tok, x, expr());
+         default:
+            return x;
       }
    }
 
@@ -299,40 +302,40 @@ public class Parser {
    Expr factor() throws IOException {
       Expr x = null;
       switch (look.tag) {
-      case '(':
-         move();
-         x = bool();
-         match(')');
-         return x;
-      case Tag.NUM:
-         x = new Constant(look, Type.Int);
-         move();
-         return x;
-      case Tag.REAL:
-         x = new Constant(look, Type.Float);
-         move();
-         return x;
-      case Tag.TRUE:
-         x = Constant.True;
-         move();
-         return x;
-      case Tag.FALSE:
-         x = Constant.False;
-         move();
-         return x;
-      default:
-         error("syntax error");
-         return x;
-      case Tag.ID:
-         String s = look.toString();
-         Id id = top.get(look);
-         if (id == null)
-            error(look.toString() + " undeclared");
-         move();
-         if (look.tag != '[')
-            return id;
-         else
-            return offset(id);
+         case '(':
+            move();
+            x = bool();
+            match(')');
+            return x;
+         case Tag.NUM:
+            x = new Constant(look, Type.Int);
+            move();
+            return x;
+         case Tag.REAL:
+            x = new Constant(look, Type.Float);
+            move();
+            return x;
+         case Tag.TRUE:
+            x = Constant.True;
+            move();
+            return x;
+         case Tag.FALSE:
+            x = Constant.False;
+            move();
+            return x;
+         default:
+            error("syntax error");
+            return x;
+         case Tag.ID:
+            String s = look.toString();
+            Id id = top.get(look);
+            if (id == null)
+               error(look.toString() + " undeclared");
+            move();
+            if (look.tag != '[')
+               return id;
+            else
+               return offset(id);
       }
    }
 
