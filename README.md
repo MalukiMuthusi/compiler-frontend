@@ -37,6 +37,8 @@ factor -> (bool) | loc | num | real | true | false
 
 ### Sample Program
 
+`java main.Main < block.t`
+
 #### Example 1
 
 ##### input file block.t
@@ -116,6 +118,7 @@ L2:
 ```
 
 ### To build
+
 Run `make build`
 
 ### Package lexer
