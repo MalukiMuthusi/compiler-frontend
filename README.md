@@ -86,41 +86,33 @@ L2:
 
 #### Example 2
 
-##### input file prog2.t
+##### input file expr1.t
 
 ```java
 {
-	int i; int j; float[10][10] a;
+	int i; float x; bool b;
 	i = 0;
-	while ( i < 10 ) {
-		j = 0;
-		while ( j < 10 ) {
-			a[i][j] = 0;
-			j = j+1;
-		}
-		i = i+1;
-	}
-	i = 0;
-	while ( i < 10 ) {
-		a[i][i] = 1;
-		i = i+1;
-	}
+	i = 365;
+	x = 0.0;
+	x = 3.14159;
+	b = true;
+	b = false;
+	i = x;
+	x = i;
 }
 ```
 
-##### output file prog2.i
+##### output file expr1.i
 
 ```txt
-L1:	prod = 0
-L3:	i = 1
-L4:	t1 = i * 8
-	t2 = a [ t1 ]
-	t3 = i * 8
-	t4 = b [ t3 ]
-	t5 = t2 * t4
-	prod = prod + t5
-L6:	i = i + 1
-L5:	if i <= 20 goto L4
+L1:	i = 0
+L3:	i = 365
+L4:	x = 0.0
+L5:	x = 3.1415896
+L6:	b = true
+L7:	b = false
+L8:	i = x
+L9:	x = i
 L2:
 ```
 
